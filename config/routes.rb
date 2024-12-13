@@ -11,10 +11,10 @@ Rails.application.routes.draw do
   
   # UPDATE
   
-  # post("/modify_response/:path_id", { :controller => "responses", :action => "update" })
+  post("/modify_response/:path_id", { :controller => "responses", :action => "update" })
   
   # DELETE
-  # get("/delete_response/:path_id", { :controller => "responses", :action => "destroy" })
+  get("/delete_response/:path_id", { :controller => "responses", :action => "destroy" })
 
   #------------------------------
 
