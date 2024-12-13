@@ -10,4 +10,8 @@
 #  questions_id :integer
 #
 class Response < ApplicationRecord
+  belongs_to :query, required: true, class_name: "Question", foreign_key: "questions_id"
+  validates :role, inclusion: { in: [ "system", "user", "helper" ] }
+  validates :role, presence: true
+  validates :body_text, presence: true
 end
