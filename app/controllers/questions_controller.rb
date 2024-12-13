@@ -23,9 +23,23 @@ class QuestionsController < ApplicationController
 
     if the_question.valid?
       the_question.save
-      redirect_to("/questions", { :notice => "Question created successfully." })
+      
+      # Create system message
+      system_response = Response.new
+      system_response.questions_id = the_question.id
+      system_response.role = "system"
+      system_response.body_text = "I am a helpful #{the_question.topic} expert who talks like Shakespeare. What do you need help with today?"
+      
+      system_response.save
+
+      # Create first user message
+
+
+      # Call API to get first assistant message
+      
+      redirect_to("/questions/#{the_question.id}", { :notice => "Question created successfully." })
     else
-      redirect_to("/questions", { :alert => the_question.errors.full_messages.to_sentence })
+      redirect_to("/questions/#{the_question.id}", { :alert => the_question.errors.full_messages.to_sentence })
     end
   end
 
