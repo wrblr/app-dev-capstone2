@@ -1,0 +1,118 @@
+<div>
+  <div>
+    <h1>
+      List of all responses
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new response
+    </h2>
+
+    <form action="/insert_response" method="post">
+      <div>
+        <label for="questions_id_box">
+          Questions
+        </label>
+
+        <input type="text" id="questions_id_box" name="query_questions_id">
+      </div>
+
+      <div>
+        <label for="body_text_box">
+          Body text
+        </label>
+
+        <input type="text" id="body_text_box" name="query_body_text">
+      </div>
+
+      <div>
+        <label for="role_box">
+          Role
+        </label>
+
+        <input type="text" id="role_box" name="query_role">
+      </div>
+
+      <button>
+        Create response
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Questions
+        </th>
+
+        <th>
+          Body text
+        </th>
+
+        <th>
+          Role
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_responses.each do |a_response| %>
+      <tr>
+        <td>
+          <%= a_response.id %>
+        </td>
+
+        <td>
+          <%= a_response.questions_id %>
+        </td>
+
+        <td>
+          <%= a_response.body_text %>
+        </td>
+
+        <td>
+          <%= a_response.role %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_response.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_response.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/responses/<%= a_response.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>

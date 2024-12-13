@@ -1,0 +1,101 @@
+<div>
+  <div>
+    <h1>
+      Response #<%= @the_response.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/responses">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_response/<%= @the_response.id %>">
+          Delete response
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Questions
+      </dt>
+      <dd>
+        <%= @the_response.questions_id %>
+      </dd>
+
+      <dt>
+        Body text
+      </dt>
+      <dd>
+        <%= @the_response.body_text %>
+      </dd>
+
+      <dt>
+        Role
+      </dt>
+      <dd>
+        <%= @the_response.role %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_response.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_response.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit response
+    </h2>
+
+    <form action="/modify_response/<%= @the_response.id %>"  method="post" >
+      <div>
+        <label for="questions_id_box">
+          Questions
+        </label>
+
+        <input type="text" id="questions_id_box" name="query_questions_id" value="<%= @the_response.questions_id %>">
+      </div>
+
+      <div>
+        <label for="body_text_box">
+          Body text
+        </label>
+
+        <input type="text" id="body_text_box" name="query_body_text" value="<%= @the_response.body_text %>">
+      </div>
+
+      <div>
+        <label for="role_box">
+          Role
+        </label>
+
+        <input type="text" id="role_box" name="query_role" value="<%= @the_response.role %>">
+      </div>
+
+      <button>
+        Update response
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
