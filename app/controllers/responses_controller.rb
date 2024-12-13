@@ -21,13 +21,13 @@ class ResponsesController < ApplicationController
     the_response = Response.new
     the_response.questions_id = params.fetch("query_questions_id")
     the_response.body_text = params.fetch("query_body_text")
-    the_response.role = params.fetch("query_role")
+    the_response.role = "user"
 
     if the_response.valid?
       the_response.save
-      redirect_to("/responses", { :notice => "Response created successfully." })
+      redirect_to("/questions/#{the_response.questions_id}", { :notice => "Response created successfully." })
     else
-      redirect_to("/responses", { :alert => the_response.errors.full_messages.to_sentence })
+      redirect_to("/questions/#{the_response.questions_id}", { :alert => the_response.errors.full_messages.to_sentence })
     end
   end
 
