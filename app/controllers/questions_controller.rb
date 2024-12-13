@@ -33,7 +33,12 @@ class QuestionsController < ApplicationController
       system_response.save
 
       # Create first user message
+      user_response = Response.new
+      user_response.role = "user"
+      user_response.questions_id = the_question.id
+      user_response.body_text = "Can you help me with #{the_question.topic}?"
 
+      user_response.save
 
       # Call API to get first assistant message
       
