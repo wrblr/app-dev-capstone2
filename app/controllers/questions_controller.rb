@@ -41,7 +41,35 @@ class QuestionsController < ApplicationController
       user_response.save
 
       # Call API to get first assistant message
+      client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+
+      message_list = [
+        {
+          "role" => "system",
+          "content" => "You are a helpful #{the_question.topic} expert who talks like Shakespeare. What do you need help with today?"
+        },
+        {
+          "role" => "user",
+          "content" => "Can you help me with #{the_question.topic}?"
+        }
+      ]
+
+      api_response = client.chat(
+        parameters: {
+          model: "gpt-4o",
+          messages: message_list
+        }
+      )
       
+      assistant_content = api_response.fetch("choices").at(0).fetch("message").fetch("content")
+
+      assistant_response = Response.new
+      assistant_response.role = "assistant"
+      assistant_response.questions_id = the_question.id
+      assistant_response.body_text = assistant_content
+
+      assistant_response.save
+
       redirect_to("/questions/#{the_question.id}", { :notice => "Question created successfully." })
     else
       redirect_to("/questions/#{the_question.id}", { :alert => the_question.errors.full_messages.to_sentence })
