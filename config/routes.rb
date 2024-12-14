@@ -20,8 +20,8 @@ Rails.application.routes.draw do
   get("/delete_response/:path_id", { :controller => "responses", :action => "destroy" })
 
   #------------------------------
-  route to: "questions#index"
-  #get("/", { :controller => "questions", :action => "index" })
+
+  get("/", { :controller => "questions", :action => "index" })
   # Routes for the Question resource:
 
   # CREATE
