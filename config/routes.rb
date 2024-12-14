@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   # CREATE
   post("/insert_response", { :controller => "responses", :action => "create" })
-          
+        
+  post("/insert_image_response", { :controller => "responses", :action => "create_with_image"})
+  
   # READ
   get("/responses", { :controller => "responses", :action => "index" })
   
@@ -24,6 +26,8 @@ Rails.application.routes.draw do
   # CREATE
   post("/insert_question", { :controller => "questions", :action => "create" })
           
+  post("/insert_image_question", { :controller => "questions", :action => "create_with_image"})
+
   # READ
   get("/questions", { :controller => "questions", :action => "index" })
   

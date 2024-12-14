@@ -36,7 +36,7 @@ class QuestionsController < ApplicationController
       user_response = Response.new
       user_response.role = "user"
       user_response.questions_id = the_question.id
-      user_response.body_text = "Can you help me with #{the_question.topic}?"
+      user_response.body_text = "Can you help me understand #{the_question.topic}?"
 
       user_response.save
 
@@ -50,15 +50,76 @@ class QuestionsController < ApplicationController
         },
         {
           "role" => "user",
-          "content" => "Can you help me with #{the_question.topic}?",
+          "content" => "Can you help me understand #{the_question.topic}?",
         },
       ]
 
       api_response = client.chat(
         parameters: {
           model: ENV.fetch("OPEN_AI_MODEL"),
-          messages: message_list
-        }
+          messages: message_list,
+        },
+      )
+
+      assistant_content = api_response.fetch("choices").at(0).fetch("message").fetch("content")
+
+      assistant_response = Response.new
+      assistant_response.role = "helper"
+      assistant_response.questions_id = the_question.id
+      assistant_response.body_text = assistant_content
+
+      assistant_response.save
+
+      redirect_to("/questions/#{the_question.id}", { :notice => "Question created successfully." })
+    else
+      redirect_to("/questions/#{the_question.id}", { :alert => the_question.errors.full_messages.to_sentence })
+    end
+  end
+
+  def create_with_image
+    the_question = Question.new
+    the_question.topic = params.fetch("query_topic")
+    the_question.image = params.fetch("query_image")
+
+    if the_question.valid?
+      the_question.save
+
+      # Create system message
+      system_response = Response.new
+      system_response.questions_id = the_question.id
+      system_response.image = the_question.image
+      system_response.role = "system"
+      system_response.body_text = "I am a helpful #{the_question.topic} expert. Can I help you answer the question in your image?"
+
+      system_response.save
+
+      # Create first user message
+      user_response = Response.new
+      user_response.role = "user"
+      user_response.questions_id = the_question.id
+      user_response.body_text = "Can you help me understand #{the_question.topic}?"
+
+      user_response.save
+
+      # Call API to get first assistant message
+      client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+
+      message_list = [
+        {
+          "role" => "system",
+          "content" => "I am a helpful #{the_question.topic} expert. Can I help you answer the question in your image?",
+        },
+        {
+          "role" => "user",
+          "content" => "Yes, please! The image is here: #{the_question.image}?",
+        },
+      ]
+
+      api_response = client.chat(
+        parameters: {
+          model: ENV.fetch("OPEN_AI_MODEL"),
+          messages: message_list,
+        },
       )
 
       assistant_content = api_response.fetch("choices").at(0).fetch("message").fetch("content")

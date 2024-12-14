@@ -1,0 +1,62 @@
+<div>
+  <div>
+    <h1>
+      Answer #<%= @the_question.id %> details:
+    </h1>
+
+    <div>
+      <div>
+        <a href="/questions">
+          Go back
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Topic
+      </dt>
+      <dd>
+        <%= @the_question.topic %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_question.created_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+<dl>
+  <% @the_question.responses.order(:created_at).each do |the_response| %>
+    <dt><%= the_response.role %></dt>
+    <dd><%= the_response.body_text %></dd>
+  <% end %>
+</dl>
+
+<h2>
+  Add a new response
+</h2>
+
+<form action="/insert_response" method="post">
+  <input type="hidden" id="questions_id_box" name="query_questions_id" value="<%= @the_question.id %>">
+
+  <div>
+    <label for="body_text_box">
+      Body text
+    </label>
+
+    <textarea id="body_text_box" name="query_body_text" rows="3"></textarea>
+  </div>
+
+  <button>
+    Create response
+  </button>
+</form>
+
+<hr>

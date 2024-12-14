@@ -1,7 +1,7 @@
 <div>
   <div>
     <h1>
-      List of all questions
+      Homework Helper
     </h1>
   </div>
 </div>
@@ -11,30 +11,58 @@
 <div>
   <div>
     <h2>
-      Add a new question
+      Begin a new conversation with the model below by entering a topic and clicking "Create Conversation":
     </h2>
 
-    <form action="/insert_question" method="post">
+    <form action="/insert_question" method="post" enctype="multipart/form-data">
       <div>
         <label for="topic_box">
-          Topic
+          Topic:
         </label>
 
         <input type="text" id="topic_box" name="query_topic">
       </div>
 
-      <>
-
       <button>
-        Create question
+        Create Conversation
       </button>
     </form>
+
+<hr>
+  
+  <div>
+    <h2>
+      Or upload an image of a multiple choice question for the model to answer below:
+    </h2>
+    
+    <form action="/insert_image_question" method="post" enctype="multipart/form-data">
+      <div>
+        <label for="image_topic_upload">
+          Image Topic:
+        </label>
+
+        <input type="text" id="image_topic_upload_box" name="query_topic">
+      </div>
+
+      <div>
+        <label for="image_upload">
+          Image File:
+        </label>
+
+        <input type="file" id="image_upload_box" name="query_image">
+      </div>
+
+      <button>
+        Answer Question
+      </button>
   </div>
 </div>
 
 <hr>
+
 <div>
   <div>
+    <h2>List of Prior Conversations:</h2>
     <table border="1">
       <tr>
         <th>
@@ -58,28 +86,28 @@
       </tr>
 
       <% @list_of_questions.each do |a_question| %>
-      <tr>
-        <td>
-          <%= a_question.id %>
-        </td>
+        <tr>
+          <td>
+            <%= a_question.id %>
+          </td>
 
-        <td>
-          <%= a_question.topic %>
-        </td>
+          <td>
+            <%= a_question.topic %>
+          </td>
 
-        <td>
-          <%= time_ago_in_words(a_question.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_question.updated_at) %> ago
-        </td>
+          <td>
+            <%= time_ago_in_words(a_question.created_at) %> ago
+          </td>
+          <td>
+            <%= time_ago_in_words(a_question.updated_at) %> ago
+          </td>
 
-        <td>
-          <a href="/questions/<%= a_question.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
+          <td>
+            <a href="/questions/<%= a_question.id %>">
+              Show details
+            </a>
+          </td>
+        </tr>
       <% end %>
     </table>
   </div>

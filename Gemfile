@@ -3,8 +3,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.1"
 # For image upload
-gem "carrierwave"
 gem "cloudinary"
+
+# For image analysis
+gem "mini_magick"
+gem "rtesseract"
 
 # For use with OpenAI GPTs
 gem "ruby-openai"
