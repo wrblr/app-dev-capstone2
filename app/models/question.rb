@@ -7,6 +7,7 @@
 #  topic      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :integer
 #
 class Question < ApplicationRecord
   has_many  :responses, class_name: "Response", foreign_key: "questions_id", dependent: :destroy

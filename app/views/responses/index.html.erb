@@ -10,45 +10,6 @@
 
 <div>
   <div>
-    <h2>
-      Add a new response
-    </h2>
-
-    <form action="/insert_response" method="post">
-      <div>
-        <label for="questions_id_box">
-          Questions
-        </label>
-
-        <input type="text" id="questions_id_box" name="query_questions_id">
-      </div>
-
-      <div>
-        <label for="body_text_box">
-          Body text
-        </label>
-
-        <input type="text" id="body_text_box" name="query_body_text">
-      </div>
-
-      <div>
-        <label for="role_box">
-          Role
-        </label>
-
-        <input type="text" id="role_box" name="query_role">
-      </div>
-
-      <button>
-        Create response
-      </button>
-    </form>
-  </div>
-</div>
-
-<hr>
-<div>
-  <div>
     <table border="1">
       <tr>
         <th>
@@ -105,9 +66,13 @@
         </td>
 
         <td>
-          <a href="/responses/<%= a_response.id %>">
-            Show details
-          </a>
+          <% if current_user != nil %>
+            <a href="/responses/<%= a_response.id %>">
+              Show details
+            </a>
+          <% else %>
+            <a href="/users/sign_in">Sign in</a>
+          <% end %>
         </td>
       </tr>
       <% end %>

@@ -9,6 +9,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  questions_id :integer
+#  user_id      :integer
 #
 class Response < ApplicationRecord
   belongs_to :question, required: true, class_name: "Question", foreign_key: "questions_id"

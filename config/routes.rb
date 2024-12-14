@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
+  devise_for :users
   devise_for :installs
+  root to: "questions#index"
+
   # Routes for the Response resource:
 
   # CREATE
@@ -21,7 +24,7 @@ Rails.application.routes.draw do
 
   #------------------------------
 
-  get("/", { :controller => "questions", :action => "index" })
+  # get("/", { :controller => "questions", :action => "index" })
   # Routes for the Question resource:
 
   # CREATE

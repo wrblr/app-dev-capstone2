@@ -13,20 +13,23 @@
     <h2>
       Begin a new conversation with the model below by entering a topic and clicking "Create Conversation":
     </h2>
+    <% if current_user != nil %>
+      <form action="/insert_question" method="post" enctype="multipart/form-data">
+        <div>
+          <label for="topic_box">
+            Topic:
+          </label>
 
-    <form action="/insert_question" method="post" enctype="multipart/form-data">
-      <div>
-        <label for="topic_box">
-          Topic:
-        </label>
+          <input type="text" id="topic_box" name="query_topic">
+        </div>
 
-        <input type="text" id="topic_box" name="query_topic">
-      </div>
-
-      <button>
-        Create Conversation
-      </button>
-    </form>
+        <button>
+          Create Conversation
+        </button>
+      </form>
+    <% else %>
+      <p>You must <a href="/users/sign_in">sign in</a> to begin a conversation.</p>
+    <% end %>
 
 <hr>
   
@@ -35,26 +38,31 @@
       Or upload an image of a multiple choice question for the model to answer below:
     </h2>
     
-    <form action="/insert_image_question" method="post" enctype="multipart/form-data">
-      <div>
-        <label for="image_topic_upload">
-          Image Topic:
-        </label>
+    <% if current_user != nil %>
+      <form action="/insert_image_question" method="post" enctype="multipart/form-data">
+        <div>
+          <label for="image_topic_upload">
+            Image Topic:
+          </label>
 
-        <input type="text" id="image_topic_upload_box" name="query_topic">
-      </div>
+          <input type="text" id="image_topic_upload_box" name="query_topic">
+        </div>
 
-      <div>
-        <label for="image_upload">
-          Image File:
-        </label>
+        <div>
+          <label for="image_upload">
+            Image File:
+          </label>
 
-        <input type="file" id="image_upload_box" name="query_image">
-      </div>
+          <input type="file" id="image_upload_box" name="query_image">
+        </div>
 
-      <button>
-        Answer Question
-      </button>
+        <button>
+          Answer Question
+        </button>
+      </form>
+    <% else %>
+      <p>You must <a href="/users/sign_in">sign in</a> to ask a question.</p>
+    <% end %>  
   </div>
 </div>
 
