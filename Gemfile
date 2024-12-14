@@ -2,6 +2,9 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.1"
+# For image upload
+gem "carrierwave"
+gem "cloudinary"
 
 # For use with OpenAI GPTs
 gem "ruby-openai"

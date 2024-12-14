@@ -28,20 +28,20 @@ class ResponsesController < ApplicationController
 
       message_list = []
 
-      the_response.questions_id.the_response.order(:created_at).each do |the_response|
+      the_response.question.responses.order(:created_at).each do |the_response|
         message_hash = {
           "role" => the_response.role,
           "content" => the_response.body_text
         }
 
         message_list.push(message_hash)
-      end
+      end 
 
       client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
 
       api_response = client.chat(
         parameters: {
-          model: "gpt-4o",
+          model: ENV.fetch("OPEN_AI_MODEL"),
           messages: message_list
         }
       )

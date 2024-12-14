@@ -56,7 +56,7 @@ class QuestionsController < ApplicationController
 
       api_response = client.chat(
         parameters: {
-          model: "gpt-4o",
+          model: ENV.fetch("OPEN_AI_MODEL"),
           messages: message_list
         }
       )

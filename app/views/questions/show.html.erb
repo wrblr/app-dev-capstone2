@@ -33,15 +33,6 @@
 <hr>
 
 <dl>
-  <dt>system</dt>
-  <dd>system prompt goes here</dd>
-
-  <dt>user</dt>
-  <dd>first user message goes here</dd>
-
-  <dt>assistant</dt>
-  <dd>first assistant message goes here</dd>
-
   <% @the_question.responses.order(:created_at).each do |the_response| %>
     <dt><%= the_response.role %></dt>
     <dd><%= the_response.body_text %></dd>
