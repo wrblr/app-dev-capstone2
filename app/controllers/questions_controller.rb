@@ -23,13 +23,13 @@ class QuestionsController < ApplicationController
 
     if the_question.valid?
       the_question.save
-      
+
       # Create system message
       system_response = Response.new
       system_response.questions_id = the_question.id
       system_response.role = "system"
       system_response.body_text = "I am a helpful #{the_question.topic} expert who talks like Shakespeare. What do you need help with today?"
-      
+
       system_response.save
 
       # Create first user message
@@ -46,12 +46,12 @@ class QuestionsController < ApplicationController
       message_list = [
         {
           "role" => "system",
-          "content" => "You are a helpful #{the_question.topic} expert who talks like Shakespeare. What do you need help with today?"
+          "content" => "You are a helpful #{the_question.topic} expert who talks like Shakespeare. What do you need help with today?",
         },
         {
           "role" => "user",
-          "content" => "Can you help me with #{the_question.topic}?"
-        }
+          "content" => "Can you help me with #{the_question.topic}?",
+        },
       ]
 
       api_response = client.chat(
@@ -60,11 +60,11 @@ class QuestionsController < ApplicationController
           messages: message_list
         }
       )
-      
+
       assistant_content = api_response.fetch("choices").at(0).fetch("message").fetch("content")
 
       assistant_response = Response.new
-      assistant_response.role = "assistant"
+      assistant_response.role = "helper"
       assistant_response.questions_id = the_question.id
       assistant_response.body_text = assistant_content
 
@@ -84,7 +84,7 @@ class QuestionsController < ApplicationController
 
     if the_question.valid?
       the_question.save
-      redirect_to("/questions/#{the_question.id}", { :notice => "Question updated successfully."} )
+      redirect_to("/questions/#{the_question.id}", { :notice => "Question updated successfully." })
     else
       redirect_to("/questions/#{the_question.id}", { :alert => the_question.errors.full_messages.to_sentence })
     end
@@ -96,6 +96,6 @@ class QuestionsController < ApplicationController
 
     the_question.destroy
 
-    redirect_to("/questions", { :notice => "Question deleted successfully."} )
+    redirect_to("/questions", { :notice => "Question deleted successfully." })
   end
 end

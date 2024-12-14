@@ -25,6 +25,34 @@ class ResponsesController < ApplicationController
 
     if the_response.valid?
       the_response.save
+
+      message_list = []
+
+      the_response.questions_id.the_response.order(:created_at).each do |the_response|
+        message_hash = {
+          "role" => the_response.role,
+          "content" => the_response.body_text
+        }
+
+        message_list.push(message_hash)
+      end
+
+      client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+
+      api_response = client.chat(
+        parameters: {
+          model: "gpt-4o",
+          messages: message_list
+        }
+      )
+
+      new_assistant_response = Response.new
+      new_assistant_response.role = "helper"
+      new_assistant_response.questions_id = the_response.questions_id
+      new_assistant_response.body_text = api_response.fetch("choices").at(0).fetch("message").fetch("content")
+
+      new_assistant_response.save
+
       redirect_to("/questions/#{the_response.questions_id}", { :notice => "Response created successfully." })
     else
       redirect_to("/questions/#{the_response.questions_id}", { :alert => the_response.errors.full_messages.to_sentence })
@@ -41,7 +69,7 @@ class ResponsesController < ApplicationController
 
     if the_response.valid?
       the_response.save
-      redirect_to("/responses/#{the_response.id}", { :notice => "Response updated successfully."} )
+      redirect_to("/responses/#{the_response.id}", { :notice => "Response updated successfully." })
     else
       redirect_to("/responses/#{the_response.id}", { :alert => the_response.errors.full_messages.to_sentence })
     end
@@ -53,6 +81,6 @@ class ResponsesController < ApplicationController
 
     the_response.destroy
 
-    redirect_to("/responses", { :notice => "Response deleted successfully."} )
+    redirect_to("/responses", { :notice => "Response deleted successfully." })
   end
 end
