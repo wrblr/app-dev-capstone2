@@ -9,6 +9,9 @@ gem "cloudinary"
 gem "mini_magick"
 gem "rtesseract"
 
+# For image encoding
+gem "base64"
+
 # For use with OpenAI GPTs
 gem "ruby-openai"
 

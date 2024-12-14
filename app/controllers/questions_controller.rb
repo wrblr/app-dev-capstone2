@@ -77,6 +77,8 @@ class QuestionsController < ApplicationController
   end
 
   def create_with_image
+    require 'base64'
+
     the_question = Question.new
     the_question.topic = params.fetch("query_topic")
     the_question.image = params.fetch("query_image")
@@ -84,12 +86,15 @@ class QuestionsController < ApplicationController
     if the_question.valid?
       the_question.save
 
+      # Encode the image
+      encoded_image = Base64.encode64(File.read(params.fetch("query_image")))
+
       # Create system message
       system_response = Response.new
       system_response.questions_id = the_question.id
       system_response.image = the_question.image
       system_response.role = "system"
-      system_response.body_text = "I am a helpful #{the_question.topic} expert. Can I help you answer the question in your image?"
+      system_response.body_text = "I am a helpful #{the_question.topic} expert. Can you provide me with the link to the image?"
 
       system_response.save
 
@@ -97,7 +102,7 @@ class QuestionsController < ApplicationController
       user_response = Response.new
       user_response.role = "user"
       user_response.questions_id = the_question.id
-      user_response.body_text = "Can you help me understand #{the_question.topic}?"
+      user_response.body_text = encoded_image
 
       user_response.save
 
@@ -107,11 +112,11 @@ class QuestionsController < ApplicationController
       message_list = [
         {
           "role" => "system",
-          "content" => "I am a helpful #{the_question.topic} expert. Can I help you answer the question in your image?",
+          "content" => "I am a helpful #{the_question.topic} expert. Can you provide me with the link to the image?",
         },
         {
           "role" => "user",
-          "content" => "Yes, please! The image is here: #{the_question.image}?",
+          "content" => encoded_image,
         },
       ]
 
