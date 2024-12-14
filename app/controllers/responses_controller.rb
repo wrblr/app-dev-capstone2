@@ -22,6 +22,7 @@ class ResponsesController < ApplicationController
     the_response.questions_id = params.fetch("query_questions_id")
     the_response.body_text = params.fetch("query_body_text")
     the_response.role = "user"
+    the_response.user_id = current_user.id
 
     if the_response.valid?
       the_response.save

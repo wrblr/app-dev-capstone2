@@ -43,20 +43,23 @@
   Add a new response
 </h2>
 
-<form action="/insert_response" method="post">
-  <input type="hidden" id="questions_id_box" name="query_questions_id" value="<%= @the_question.id %>">
+<% if current_user != nil %>
+  <form action="/insert_response" method="post">
+    <input type="hidden" id="questions_id_box" name="query_questions_id" value="<%= @the_question.id %>">
 
-  <div>
-    <label for="body_text_box">
-      Body text
-    </label>
+    <div>
+      <label for="body_text_box">
+        Body text
+      </label>
 
-    <textarea id="body_text_box" name="query_body_text" rows="3"></textarea>
-  </div>
+      <textarea id="body_text_box" name="query_body_text" rows="3"></textarea>
+    </div>
 
-  <button>
-    Create response
-  </button>
-</form>
-
+    <button>
+      Create response
+    </button>
+  </form>
+<% else %>
+  <p>You must <a href="/users/sign_in">sign in</a> to continue the conversation.</p>
+<% end %>
 <hr>

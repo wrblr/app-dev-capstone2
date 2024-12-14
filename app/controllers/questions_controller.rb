@@ -83,6 +83,7 @@ class QuestionsController < ApplicationController
     the_question = Question.new
     the_question.topic = params.fetch("query_topic")
     the_question.image = params.fetch("query_image")
+    the_question.user_id = current_user.id
 
     if the_question.valid?
       the_question.save
